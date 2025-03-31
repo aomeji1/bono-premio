@@ -1,0 +1,11 @@
+# Query: 
+# ContextLines: 1
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $lat = $_POST['lat'];
+    $lon = $_POST['lon'];
+    file_put_contents("locations.txt", "Lat: $lat, Lon: $lon\n", FILE_APPEND);
+    echo "Ubicación guardada";
+}
+?>
